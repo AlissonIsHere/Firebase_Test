@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,11 +46,40 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TextEditingController message = TextEditingController();
+  FirebaseDatabase database = FirebaseDatabase.instance;
+  late DatabaseReference ref;
   @override
+  void initState() {
+    ref = database.ref();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Firebase'),
+        title: const Text('Firebase App'),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(30),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Nome',
+              ),
+              controller: message,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(onPressed: () async {
+              await ref.child('Usuario').push().set({
+                "name": message.text,
+              });
+            }),
+          )
+        ],
       ),
     );
   }
