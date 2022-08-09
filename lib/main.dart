@@ -73,11 +73,14 @@ class _HomeState extends State<Home> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(onPressed: () async {
-              await ref.child('Usuario').push().set({
-                "name": message.text,
-              });
-            }),
+            child: FloatingActionButton(
+              onPressed: () async {
+                await ref.child('Usuario').push().set({
+                  "name": message.text,
+                });
+              },
+              child: const Icon(Icons.add),
+            ),
           )
         ],
       ),
